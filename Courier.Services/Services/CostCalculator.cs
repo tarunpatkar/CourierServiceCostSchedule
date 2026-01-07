@@ -53,7 +53,7 @@ namespace Courier.Services.Services
             if (pkg.Distance < 0)
                 throw new ArgumentException("Package distance cannot be negative.");
             if(pkg.Weight > _maxWeightAllowed)
-                throw new ArgumentException("Package weight exceeds maximum limit of 200 kg.");
+                throw new ArgumentException($"Package weight exceeds maximum limit of {_maxWeightAllowed} kg.");
         }
     }
 }
