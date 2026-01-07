@@ -4,6 +4,7 @@ using Courier.Services.Services;
 
 try
 {
+    const double maximumWeightAllowed = 200;
     var offers = new Dictionary<string, IOffer>
         {
             { "OFR001", new Offer001() },
@@ -11,7 +12,7 @@ try
             { "OFR003", new Offer003() }
         };
 
-    var calculator = new CostCalculator(100, offers);
+    var calculator = new CostCalculator(100, maximumWeightAllowed, offers);
 
     var packages = new List<Package>
         {
@@ -22,7 +23,7 @@ try
             new Package { Id = "PKG5", Weight = 155, Distance = 95, OfferCode = "NA" },
         };
 
-    var scheduler = new DeliveryScheduler(vehicleCount: 2, maxSpeed: 70, maxWeight: 200);
+    var scheduler = new DeliveryScheduler(vehicleCount: 2, maxSpeed: 70, maxWeight: maximumWeightAllowed);
     scheduler.ScheduleDeliveries(packages, calculator);
 
     foreach (var pkg in packages)
