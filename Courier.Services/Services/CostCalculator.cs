@@ -11,11 +11,13 @@ namespace Courier.Services.Services
     public class CostCalculator : ICostCalculator
     {
         private readonly double _baseCost;
+        private readonly double _maxWeightAllowed;
         private readonly Dictionary<string, IOffer> _offers;
 
-        public CostCalculator(double baseCost, Dictionary<string, IOffer> offers)
+        public CostCalculator(double baseCost, double maxWeightAllowed, Dictionary<string, IOffer> offers)
         {
             _baseCost = baseCost;
+            _maxWeightAllowed = maxWeightAllowed;
             _offers = offers;
         }
         public void Calculate(Package pkg)
@@ -38,7 +40,7 @@ namespace Courier.Services.Services
             {
                 Console.WriteLine($"Error calculating cost for {pkg?.Id}: {ex.Message}");
                 pkg.Discount = 0;
-                pkg.TotalCost = 0; // fallback
+                pkg.TotalCost = 0; 
 
             }
         }
@@ -50,6 +52,8 @@ namespace Courier.Services.Services
                 throw new ArgumentException("Package weight cannot be negative.");
             if (pkg.Distance < 0)
                 throw new ArgumentException("Package distance cannot be negative.");
+            if(pkg.Weight > _maxWeightAllowed)
+                throw new ArgumentException("Package weight exceeds maximum limit of 200 kg.");
         }
     }
 }
